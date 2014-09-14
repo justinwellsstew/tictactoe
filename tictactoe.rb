@@ -6,22 +6,43 @@
 # 5. Eval if there is a winner
 # 6. Display winner 
 
-# positions hash
+# possible positions hash
 positions = {"1" =>"", "2" => "", "3" => "", "4" =>"", "5" => "", "6" => "", "7" => "", "8" => "", "9" => ""}
-computer_play = ""
 
-puts "
-#{positions["1"]}| #{positions["2"]} |#{positions["3"]}
--------
-#{positions["4"]}| #{positions["5"]} |#{positions["6"]}
-------
-#{positions["7"]}| #{positions["8"]} |#{positions["9"]}
-"
+# create method to draw board to screen
+def board(positions)
+  puts "
+  #{positions["1"]}| #{positions["2"]} |#{positions["3"]}
+  -------
+  #{positions["4"]}| #{positions["5"]} |#{positions["6"]}
+  ------
+  #{positions["7"]}| #{positions["8"]} |#{positions["9"]}
+  "
+end 
 
+def find_positions(positions, symbol)
+  positions.select { |k,v| v == symbol}
+end 
 
+def winner(x) 
+  # test whether user has won game
+  if  x.keys.include?("1") &&  x.keys.include?("2") && x.keys.include?("3")  || 
+      x.keys.include?("4") &&  x.keys.include?("5") && x.keys.include?("6")  ||
+      x.keys.include?("7") &&  x.keys.include?("8") && x.keys.include?("9")  ||
+      x.keys.include?("1") &&  x.keys.include?("4") && x.keys.include?("7")  ||
+      x.keys.include?("2") &&  x.keys.include?("5") && x.keys.include?("8")  ||
+      x.keys.include?("3") &&  x.keys.include?("6") && x.keys.include?("9")  ||
+      x.keys.include?("3") &&  x.keys.include?("5") && x.keys.include?("7")  ||
+      x.keys.include?("1") &&  x.keys.include?("5") && x.keys.include?("9")
+    return 
+    true 
+  else 
+    false   
+  end 
+end  
 
+#create loop that loops until board is full or player wins. 
 begin
-  system "clear"
   puts "Select a position"
   available_positions = []
   user_play = gets.chop
@@ -35,27 +56,31 @@ begin
 
   computer_play = available_positions.sample 
   positions[computer_play] = "O" 
-  puts available_positions.to_s     
-  puts "
-  #{positions["1"]}| #{positions["2"]} |#{positions["3"]}
-  -------
-  #{positions["4"]}| #{positions["5"]} |#{positions["6"]}
-  ------
-  #{positions["7"]}| #{positions["8"]} |#{positions["9"]}
-  "
-  user_positions = positions.select { |k,v| v == "X" }
-  if  user_positions.keys.include?("1") &&  user_positions.keys.include?("2") && user_positions.keys.include?("3")  || 
-      user_positions.keys.include?("4") &&  user_positions.keys.include?("5") && user_positions.keys.include?("6")  ||
-      user_positions.keys.include?("7") &&  user_positions.keys.include?("8") && user_positions.keys.include?("9")  ||
-      user_positions.keys.include?("1") &&  user_positions.keys.include?("4") && user_positions.keys.include?("7")  ||
-      user_positions.keys.include?("2") &&  user_positions.keys.include?("5") && user_positions.keys.include?("8")  ||
-      user_positions.keys.include?("3") &&  user_positions.keys.include?("6") && user_positions.keys.include?("9")  ||
-      user_positions.keys.include?("3") &&  user_positions.keys.include?("5") && user_positions.keys.include?("7")  ||
-      user_positions.keys.include?("1") &&  user_positions.keys.include?("5") && user_positions.keys.include?("9")
-    puts "yeah!! you win"
+  puts available_positions.to_s  
+
+  board(positions)
+  
+  # find positions of user
+  user_positions = find_positions(positions, "X")
+  computer_positions = find_positions(positions, "O")
+  puts "user positions: " + user_positions.to_s
+  puts "computer positions: " +computer_positions.to_s
+
+  # test whether user has won game
+  winner(user_positions)
+  winner(computer_positions)
+
+  if winner(user_positions)
+    puts "**********yeahhhhh.. You won *******************"
     break
-  end  
-end while !available_positions.empty?
+  end 
+
+  if winner(computer_positions)
+    puts ":( :( :(:( :( :( boo.. Computer won :( :( :( :( :( :(" 
+    break  
+  end    
+
+end while !available_positions.empty? 
   
 
   

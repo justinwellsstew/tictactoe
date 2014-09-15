@@ -34,10 +34,9 @@ def winner(x)
       x.keys.include?("3") &&  x.keys.include?("6") && x.keys.include?("9")  ||
       x.keys.include?("3") &&  x.keys.include?("5") && x.keys.include?("7")  ||
       x.keys.include?("1") &&  x.keys.include?("5") && x.keys.include?("9")
-    return 
-    true 
+    return true 
   else 
-    false   
+    return false   
   end 
 end  
 
